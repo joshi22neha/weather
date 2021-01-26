@@ -1,12 +1,22 @@
 body{
-    background: url('images/weather image light bg.jpg') no-repeat center fixed;
+    background: url('images/Abstract-Ambient-Light-Background-Day-Blue.jpg') no-repeat center fixed;
     background-size: cover;
     
 }
 .container{
     position: relative;
 }
-.search-bar{
+@media screen and (max-width: 500px){
+  .search-bar{
+    margin: 10px 0px 10px 10px;
+    width: 200px;
+    background-color: #ffffff;
+    opacity: 0.6;
+    border-radius: 5px;
+}
+}
+@media screen and (min-width: 500px){
+  .search-bar{
     margin: 10px 0px 10px 10px;
     width: 200px;
     transition: width 0.5s linear 0.5s;
@@ -14,16 +24,18 @@ body{
     opacity: 0.6;
     border-radius: 5px;
 }
+.search-bar:hover {
+  width: 400px;
+}
+}
+
 .search-button{
     margin: 10px 10px 10px 0px;
     background-color: #ffffff;
     opacity: 0.6;
     border-radius: 5px;
 }
-.search-bar:hover {
-    width: 400px;
-    
-  }
+
   .modalText {
     text-align: center;
   }

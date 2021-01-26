@@ -1,33 +1,54 @@
-import React from 'react';
-import './weather.css';
-import { Modal, ModalHeader, ModalBody, ModalFooter} from 'reactstrap';
+import React from "react";
+import "./weather.css";
+import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
+const Remove = ({
+  cards,
+  selectedCardIndex,
+  setSelectedCardIndex,
+  toggleRemove,
+  modalRemove,
+  setModalRemove,
+}) => {
+  const deleteItem = () => {
+    cards.splice(selectedCardIndex, 1);
+    setModalRemove(!modalRemove);
+    setSelectedCardIndex(0);
+  };
 
-const Remove = ({results, toggle, modal}) => {
-    return(
-        <div>
-            <Modal isOpen={modal} toggle={toggle} className='modal-dialog modal-dialog-centered' >
-                    <ModalHeader  toggle={toggle}>Weather in {results.name},{results.sys.country}</ModalHeader>
-                    <ModalBody  >
-                        <p className='modalText'>{results.main.temp} °C
-                        <br/>
-                        {results.weather[0].main}
-                        <br/>
-                        <br/></p>
-                        <ul>
-                            <li>Wind: {results.wind.speed},{results.wind.deg} </li>
-                            <li>Humidity: {results.main.humidity}% </li>
-                            <li>Pressure: {results.main.pressure} hpa </li>
-                            <li>Sunrise: {results.sys.sunrise} </li>
-                            <li>Sunset: {results.sys.sunset} </li>
-                        </ul>
-                    </ModalBody>
-                    <ModalFooter >
-                    <button >Remove</button>
-                    </ModalFooter>
-                </Modal>
-        </div>
-    );
+  return (
+    <div>
+      <Modal
+        isOpen={modalRemove}
+        toggle={toggleRemove}
+        className="modal-dialog modal-dialog-centered"
+      >
+        <ModalHeader toggle={toggleRemove}>
+          Weather in {cards[selectedCardIndex].city},
+          {cards[selectedCardIndex].country}
+        </ModalHeader>
+        <ModalBody>
+          <p className="modalText">
+            {cards[selectedCardIndex].temp}
+            <br />
+            {cards[selectedCardIndex].main}
+            <br />
+            <br />
+          </p>
+          <ul>
+            <li>Wind: {cards[selectedCardIndex].wind} </li>
+            <li>Humidity: {cards[selectedCardIndex].humidity} </li>
+            <li>Pressure: {cards[selectedCardIndex].pressure} </li>
+            <li>Sunrise: {cards[selectedCardIndex].sunrise} </li>
+            <li>Sunset: {cards[selectedCardIndex].sunset} </li>
+          </ul>
+        </ModalBody>
+        <ModalFooter>
+          <button onClick={deleteItem}>Remove</button>
+        </ModalFooter>
+      </Modal>
+    </div>
+  );
 };
 
 export default Remove;
