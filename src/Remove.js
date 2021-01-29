@@ -31,7 +31,7 @@ const Remove = ({
           <p className="modalText">
             {cards[selectedCardIndex].temp}
             <br />
-            {cards[selectedCardIndex].main}
+            <img src={cards[selectedCardIndex].image} alt='weather desc' /> {cards[selectedCardIndex].main}
             <br />
             <br />
           </p>

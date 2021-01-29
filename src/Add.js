@@ -1,5 +1,5 @@
 import "./weather.css";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Card from "./Card";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -12,6 +12,7 @@ const Add = ({
   results,
   setModal,
   image,
+  term,
 }) => {
   const [cards, setCards] = useState([{}]);
 
@@ -26,12 +27,45 @@ const Add = ({
         humidity: results.main.humidity + " %",
         pressure: results.main.pressure + " hpa",
         sunrise: new Date(results.sys.sunrise).toISOString().slice(11, 16),
-        sunset: new Date(results.sys.sunset).toISOString().slice(11, 16)
+        sunset: new Date(results.sys.sunset).toISOString().slice(11, 16),
+        image: image,
       })
     );
-    //cards.splice(0,1);
     setModal(!modal);
   };
+  const isFirstRun = useRef(false);
+  let display = "";
+  if (isFirstRun.current) {
+    if (cards) {
+      const value = cards.filter((card) => {
+        return card.city === results.name;
+      });
+      console.log(value, "value");
+      if (value.length === 0) {
+        display = <button onClick={addToCard}>Add</button>;
+      } else {
+        display = (
+          <button
+            onClick={() => {
+              toggle();
+              cards.forEach((card, index) => {
+                if (card.city === value[0].city) {
+                  console.log(card.city, value[0].city);
+                  cards.splice(index, 1);
+                }
+              });
+            }}
+          >
+            Remove
+          </button>
+        );
+      }
+    }
+  } else {
+    display = <button onClick={addToCard}>Add</button>;
+    isFirstRun.current = true;
+  }
+  console.log(cards, "cards");
   if (errorMessage) {
     return (
       <Modal
@@ -61,7 +95,7 @@ const Add = ({
             <p className="modalText">
               {results.main.temp} °C
               <br />
-              <img src={image} alt="weather" />
+              <img src={image} alt="weather desc" />
               {results.weather[0].main}
               <br />
               <br />
@@ -72,15 +106,19 @@ const Add = ({
               </li>
               <li>Humidity: {results.main.humidity}% </li>
               <li>Pressure: {results.main.pressure} hpa </li>
-              <li>Sunrise: {new Date (results.sys.sunrise).toISOString().slice(11, 16)} </li>
-              <li>Sunset: {new Date (results.sys.sunset).toISOString().slice(11, 16)} </li>
+              <li>
+                Sunrise:{" "}
+                {new Date(results.sys.sunrise).toISOString().slice(11, 16)}{" "}
+              </li>
+              <li>
+                Sunset:{" "}
+                {new Date(results.sys.sunset).toISOString().slice(11, 16)}{" "}
+              </li>
             </ul>
           </ModalBody>
-          <ModalFooter>
-            <button onClick={addToCard}>Add</button>
-          </ModalFooter>
+          <ModalFooter>{display}</ModalFooter>
         </Modal>
-        <Card cards={cards} setCards={setCards} />
+        <Card cards={cards} />
       </React.Fragment>
     );
   }

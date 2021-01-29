@@ -24,11 +24,11 @@ const Result = ({ term, modal, setModal, toggle }) => {
           }
         );
         setResults(response.data);
-        const imageResponse = axios.get(
+        const imageResponse =
           "https://openweathermap.org/img/wn/" +
-            response.data.weather[0].icon +
-            "@2x.png"
-        );
+          response.data.weather[0].icon +
+          "@2x.png";
+
         setImage(imageResponse);
       } catch (e) {
         setErrorMessage(e.message);
@@ -62,6 +62,7 @@ const Result = ({ term, modal, setModal, toggle }) => {
           toggle={toggle}
           results={results}
           setModal={setModal}
+          term={term}
         />
       </div>
     );

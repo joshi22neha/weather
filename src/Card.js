@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./weather.css";
 import Remove from "./Remove";
 
-const Card = ({ cards, setCards }) => {
+const Card = ({ cards}) => {
   const [modalRemove, setModalRemove] = useState(false);
   const [selectedCardIndex, setSelectedCardIndex] = useState(0);
   const toggleRemove = () => {
@@ -20,6 +20,7 @@ const Card = ({ cards, setCards }) => {
             toggleRemove();
           }}
           className="cardList"
+          key= {card.city}
         >
           <b>
             Weather in {card.city}, {card.country}
@@ -29,7 +30,7 @@ const Card = ({ cards, setCards }) => {
             {" "}
             {card.temp}
             <br />
-            {card.main}
+            <img src={card.image} alt='weather desc' /> {card.main}
           </p>
           <br />
           <span className="dateDisplay">
@@ -40,6 +41,7 @@ const Card = ({ cards, setCards }) => {
         </div>
       );
     }
+    else return null;
   });
 
   return (
