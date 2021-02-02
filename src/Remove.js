@@ -4,6 +4,7 @@ import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 const Remove = ({
   cards,
+  setCards,
   selectedCardIndex,
   setSelectedCardIndex,
   toggleRemove,
@@ -12,6 +13,7 @@ const Remove = ({
 }) => {
   const deleteItem = () => {
     cards.splice(selectedCardIndex, 1);
+    setCards(cards);
     setModalRemove(!modalRemove);
     setSelectedCardIndex(0);
   };

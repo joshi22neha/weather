@@ -6,11 +6,13 @@ import Result from "./Result";
 const App = () => {
   const [term, setTerm] = useState("");
   const [modal, setModal] = useState(false);
+  const [submission, setSubmission] = useState(false);
 
   const toggle = () => setModal(!modal);
 
   const onTermSubmit = (event) => {
     event.preventDefault();
+    setSubmission(event);
   };
   return (
     <div className="container">
@@ -37,7 +39,13 @@ const App = () => {
           </div>
         </form>
       </div>
-      <Result term={term} modal={modal} setModal={setModal} toggle={toggle} />
+      <Result
+        submission={submission}
+        term={term}
+        modal={modal}
+        setModal={setModal}
+        toggle={toggle}
+      />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import "./weather.css";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Card from "./Card";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
@@ -16,6 +16,15 @@ const Add = ({
 }) => {
   const [cards, setCards] = useState([{}]);
 
+  useEffect(()=>{
+    cards.forEach((card, index)=>{
+      localStorage.setItem(index, JSON.stringify(card));
+    });
+    
+    
+  }, [cards]);
+  
+  
   const addToCard = () => {
     setCards(
       cards.concat({
@@ -31,6 +40,7 @@ const Add = ({
         image: image,
       })
     );
+
     setModal(!modal);
   };
   const isFirstRun = useRef(false);
@@ -40,9 +50,10 @@ const Add = ({
       const value = cards.filter((card) => {
         return card.city === results.name;
       });
-      console.log(value, "value");
+
       if (value.length === 0) {
         display = <button onClick={addToCard}>Add</button>;
+        
       } else {
         display = (
           <button
@@ -50,8 +61,8 @@ const Add = ({
               toggle();
               cards.forEach((card, index) => {
                 if (card.city === value[0].city) {
-                  console.log(card.city, value[0].city);
                   cards.splice(index, 1);
+                  setCards(cards);
                 }
               });
             }}
@@ -65,63 +76,65 @@ const Add = ({
     display = <button onClick={addToCard}>Add</button>;
     isFirstRun.current = true;
   }
-  console.log(cards, "cards");
-  if (errorMessage) {
-    return (
-      <Modal
-        isOpen={modal}
-        toggle={toggle}
-        onClosed={() => {
-          setErrorMessage("");
-        }}
-        className="modal-dialog modal-dialog-centered"
-      >
-        <ModalHeader toggle={toggle}>Invalid City</ModalHeader>
-        <ModalBody>Please Enter valid city name</ModalBody>
-      </Modal>
-    );
-  } else {
-    return (
-      <React.Fragment>
+  const addOutput = () => {
+    if (errorMessage) {
+      return (
         <Modal
           isOpen={modal}
           toggle={toggle}
+          onClosed={() => {
+            setErrorMessage("");
+          }}
           className="modal-dialog modal-dialog-centered"
         >
-          <ModalHeader toggle={toggle}>
-            Weather in {results.name},{results.sys.country}
-          </ModalHeader>
-          <ModalBody>
-            <p className="modalText">
-              {results.main.temp} °C
-              <br />
-              <img src={image} alt="weather desc" />
-              {results.weather[0].main}
-              <br />
-              <br />
-            </p>
-            <ul>
-              <li>
-                Wind: {results.wind.speed},{results.wind.deg}{" "}
-              </li>
-              <li>Humidity: {results.main.humidity}% </li>
-              <li>Pressure: {results.main.pressure} hpa </li>
-              <li>
-                Sunrise:{" "}
-                {new Date(results.sys.sunrise).toISOString().slice(11, 16)}{" "}
-              </li>
-              <li>
-                Sunset:{" "}
-                {new Date(results.sys.sunset).toISOString().slice(11, 16)}{" "}
-              </li>
-            </ul>
-          </ModalBody>
-          <ModalFooter>{display}</ModalFooter>
+          <ModalHeader toggle={toggle}>Invalid City</ModalHeader>
+          <ModalBody>Please Enter valid city name</ModalBody>
         </Modal>
-        <Card cards={cards} />
-      </React.Fragment>
-    );
-  }
+      );
+    } else {
+      return (
+        <React.Fragment>
+          <Modal
+            isOpen={modal}
+            toggle={toggle}
+            className="modal-dialog modal-dialog-centered"
+          >
+            <ModalHeader toggle={toggle}>
+              Weather in {results.name},{results.sys.country}
+            </ModalHeader>
+            <ModalBody>
+              <p className="modalText">
+                {results.main.temp} °C
+                <br />
+                <img src={image} alt="weather desc" />
+                {results.weather[0].main}
+                <br />
+                <br />
+              </p>
+              <ul>
+                <li>
+                  Wind: {results.wind.speed},{results.wind.deg}{" "}
+                </li>
+                <li>Humidity: {results.main.humidity}% </li>
+                <li>Pressure: {results.main.pressure} hpa </li>
+                <li>
+                  Sunrise:{" "}
+                  {new Date(results.sys.sunrise).toISOString().slice(11, 16)}{" "}
+                </li>
+                <li>
+                  Sunset:{" "}
+                  {new Date(results.sys.sunset).toISOString().slice(11, 16)}{" "}
+                </li>
+              </ul>
+            </ModalBody>
+            <ModalFooter>{display}</ModalFooter>
+          </Modal>
+          <Card cards={cards} setCards={setCards} />
+        </React.Fragment>
+      );
+    }
+  };
+  return <>{addOutput()}</>;
 };
 
 export default Add;

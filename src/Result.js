@@ -4,7 +4,7 @@ import axios from "axios";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Add from "./Add";
 
-const Result = ({ term, modal, setModal, toggle }) => {
+const Result = ({ submission, term, modal, setModal, toggle }) => {
   const token = "ab1f9e7f91651c4aad84f69d28fc8f9c";
   const [results, setResults] = useState("");
   const [image, setImage] = useState("");
@@ -34,26 +34,20 @@ const Result = ({ term, modal, setModal, toggle }) => {
         setErrorMessage(e.message);
       }
     };
-    const timeoutId = setTimeout(() => {
-      if (term) {
-        searchKeyword();
-      }
-    }, 1000);
+    if (submission) {
+      searchKeyword();
+    }
+  }, [submission]);
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [term]);
-
-  if (!results && !errorMessage) {
-    return (
-      <div>
-        <p className="pageIntro">Type City name to search for data</p>
-      </div>
-    );
-  } else {
-    return (
-      <div>
+  const resultOutput = () => {
+    if (!results && !errorMessage) {
+      return (
+        <div>
+          <p className="pageIntro">Type City name to search for data</p>
+        </div>
+      );
+    } else {
+      return (
         <Add
           errorMessage={errorMessage}
           setErrorMessage={setErrorMessage}
@@ -64,9 +58,10 @@ const Result = ({ term, modal, setModal, toggle }) => {
           setModal={setModal}
           term={term}
         />
-      </div>
-    );
-  }
+      );
+    }
+  };
+  return <div>{resultOutput()}</div>;
 };
 
 export default Result;
