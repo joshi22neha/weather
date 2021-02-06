@@ -16,6 +16,7 @@ const Remove = ({
     setCards(cards);
     setModalRemove(!modalRemove);
     setSelectedCardIndex(0);
+    localStorage.removeItem(selectedCardIndex);
   };
 
   return (

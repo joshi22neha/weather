@@ -10,46 +10,11 @@ const Card = ({ cards, setCards }) => {
   };
 
   let date = new Date();
- /* const renderedList = () => {
-    for(let index = 1; index<cards.length; index++){
-      var card = JSON.parse(localStorage.getItem(index));
-      if(card && index>=1){
-        return (
-          <div
-            onClick={() => {
-              setSelectedCardIndex(index);
-              toggleRemove();
-            }}
-            className="cardList"
-            key={card[index].city}
-          >
-            <b>
-              Weather in {card[index].city}, {card[index].country}
-            </b>
-            <br />
-            <p className="modalText">
-              {" "}
-              {card[index].temp}
-              <br />
-              <img src={card[index].image} alt="weather desc" /> {card[index].main}
-            </p>
-            <br />
-            <span className="dateDisplay">
-              {" "}
-              {date.getDate()} {date.toLocaleString("default", { month: "long" })}{" "}
-              {date.getFullYear()}
-            </span>
-          </div>
-        );
-      }
+ 
+const renderedList = cards.map((card, index) => {
       
-    }
-  };*/
-  
-
-
-  const renderedList = cards.map((card, index) => {
-    
+    //var list = JSON.parse(localStorage.getItem(index) || '0');
+    //console.log(list);
     if (index > 0) {
       return (
         <div
@@ -58,17 +23,21 @@ const Card = ({ cards, setCards }) => {
             toggleRemove();
           }}
           className="cardList"
-          key={card.city}
+           key={card.city}
+          // key={list.city}
         >
           <b>
             Weather in {card.city}, {card.country}
+            {/* Weather in {list.city}, {list.country} */}
           </b>
           <br />
           <p className="modalText">
             {" "}
             {card.temp}
+            {/* {list.temp} */}
             <br />
             <img src={card.image} alt="weather desc" /> {card.main}
+            {/* <img src={list.image} alt="weather desc" /> {list.main} */}
           </p>
           <br />
           <span className="dateDisplay">

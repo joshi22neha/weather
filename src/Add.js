@@ -19,7 +19,9 @@ const Add = ({
   useEffect(()=>{
     cards.forEach((card, index)=>{
       localStorage.setItem(index, JSON.stringify(card));
+      
     });
+    
     
     
   }, [cards]);
@@ -63,6 +65,7 @@ const Add = ({
                 if (card.city === value[0].city) {
                   cards.splice(index, 1);
                   setCards(cards);
+                  localStorage.removeItem(index);
                 }
               });
             }}

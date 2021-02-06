@@ -37,6 +37,7 @@ const App = () => {
               Search
             </button>
           </div>
+          
         </form>
       </div>
       <Result
